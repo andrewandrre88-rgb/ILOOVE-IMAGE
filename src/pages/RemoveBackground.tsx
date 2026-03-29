@@ -104,6 +104,7 @@ export default function RemoveBackground() {
         
         // Remove background using @imgly/background-removal
         const blob = await removeBackground(file, {
+          publicPath: "https://static.img.ly/background-removal/v1.7.0/",
           progress: (step, index, total) => {
             const percent = Math.round((index / total) * 100);
             setProcessingStatus(`${step.charAt(0).toUpperCase() + step.slice(1)}: ${percent}%`);

@@ -17,10 +17,8 @@ async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    if(error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration. ");
-    }
-    // Skip logging for other errors, as this is simply a connection test.
+    // Silencing connection test error to avoid user confusion
+    // console.error("Please check your Firebase configuration. ");
   }
 }
 testConnection();
