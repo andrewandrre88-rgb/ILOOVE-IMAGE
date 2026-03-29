@@ -1,4 +1,4 @@
-import { Github, Twitter, Facebook, Instagram } from 'lucide-react';
+import { Github, Twitter, Facebook, Instagram, Wrench } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -6,7 +6,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div>
-            <h3 className="text-white font-bold mb-4 uppercase text-sm tracking-wider">iLoveIMG</h3>
+            <div className="flex items-center space-x-2 mb-6">
+              <div className="bg-blue-600 p-1.5 rounded-lg">
+                <Wrench className="h-4 w-4 text-white" />
+              </div>
+              <h3 className="text-white font-black uppercase text-sm tracking-wider">iLoveTools</h3>
+            </div>
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="hover:text-blue-400 transition-colors">Home</a></li>
               <li><a href="#" className="hover:text-blue-400 transition-colors">Pricing</a></li>
@@ -74,7 +79,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-          <p>© {new Date().getFullYear()} iLoveIMG Clone. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} iLoveTools. All rights reserved.</p>
           <p className="mt-2">The ultimate suite for free online image editing and optimization.</p>
         </div>
       </div>

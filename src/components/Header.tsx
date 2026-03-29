@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Image as ImageIcon, 
+  Wrench,
   Menu, 
   X, 
   ChevronDown, 
@@ -85,12 +86,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center space-x-10">
-            <Link to="/" className="flex items-center space-x-2.5 group">
-              <div className="bg-blue-600 p-2 rounded-xl group-hover:rotate-6 transition-transform duration-300 shadow-lg shadow-blue-200">
-                <ImageIcon className="h-6 w-6 text-white" />
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="bg-linear-to-br from-blue-600 to-indigo-700 p-2.5 rounded-2xl group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-xl shadow-blue-500/20 ring-4 ring-blue-50">
+                <Wrench className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-black text-gray-900 tracking-tighter uppercase">
-                iLove<span className="text-blue-600">IMG</span>
+                iLove<span className="text-blue-600">Tools</span>
               </span>
             </Link>
             
@@ -243,12 +244,12 @@ export default function Header() {
           >
             <div className="flex flex-col h-full">
               <div className="flex justify-between items-center h-20 px-4 border-b border-gray-100">
-                <Link to="/" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2">
-                  <div className="bg-blue-600 p-2 rounded-xl">
-                    <ImageIcon className="h-6 w-6 text-white" />
+                <Link to="/" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-3 group">
+                  <div className="bg-linear-to-br from-blue-600 to-indigo-700 p-2.5 rounded-2xl shadow-lg shadow-blue-500/20 ring-4 ring-blue-50">
+                    <Wrench className="h-6 w-6 text-white" />
                   </div>
                   <span className="text-2xl font-black text-gray-900 tracking-tighter uppercase">
-                    iLove<span className="text-blue-600">IMG</span>
+                    iLove<span className="text-blue-600">Tools</span>
                   </span>
                 </Link>
                 <button 

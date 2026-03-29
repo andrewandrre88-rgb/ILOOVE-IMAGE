@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Image as ImageIcon, ArrowLeft } from 'lucide-react';
+import { Wrench, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signInWithGoogle, useAuthState, handleRedirectResult } from '../firebase';
 import { useEffect, useState } from 'react';
@@ -57,12 +57,12 @@ export default function Login() {
         className="max-w-md w-full bg-white rounded-[40px] shadow-2xl border border-gray-100 p-10 relative z-10"
       >
         <div className="text-center mb-10">
-          <Link to="/" className="inline-flex items-center space-x-2.5 group mb-8">
-            <div className="bg-blue-600 p-2.5 rounded-2xl group-hover:rotate-6 transition-transform duration-300 shadow-xl shadow-blue-200">
-              <ImageIcon className="h-7 w-7 text-white" />
+          <Link to="/" className="inline-flex items-center space-x-3 group mb-8">
+            <div className="bg-linear-to-br from-blue-600 to-indigo-700 p-3 rounded-2xl group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-xl shadow-blue-500/20 ring-4 ring-blue-50">
+              <Wrench className="h-7 w-7 text-white" />
             </div>
             <span className="text-3xl font-black text-gray-900 tracking-tighter uppercase">
-              iLove<span className="text-blue-600">IMG</span>
+              iLove<span className="text-blue-600">Tools</span>
             </span>
           </Link>
         </div>

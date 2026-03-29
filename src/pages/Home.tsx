@@ -21,7 +21,8 @@ import {
   Wind,
   Circle,
   Grid,
-  ZapIcon
+  ZapIcon,
+  Wrench
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
@@ -200,6 +201,16 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-20 bg-gray-900 text-white overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md px-6 py-3 rounded-3xl border border-white/20 mb-10"
+          >
+            <div className="bg-blue-600 p-2 rounded-xl">
+              <Wrench className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-sm font-black tracking-widest uppercase">iLoveTools</span>
+          </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -213,7 +224,7 @@ export default function Home() {
             transition={{ delay: 0.1 }}
             className="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto font-medium"
           >
-            iLoveIMG is the web app that helps you modify images for free. 
+            iLoveTools is the web app that helps you modify images for free. 
             Compress, resize, crop, convert, and more!
           </motion.p>
           <motion.div 
@@ -295,7 +306,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter">Ready to optimize your images?</h2>
           <p className="text-xl text-blue-100 mb-12 font-medium">
-            Join millions of users who trust iLoveIMG for their daily image editing needs.
+            Join millions of users who trust iLoveTools for their daily image editing needs.
           </p>
           {user ? (
             <a href="#tools" className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-black text-xl tracking-widest hover:bg-gray-100 transition-all shadow-2xl uppercase inline-block">
