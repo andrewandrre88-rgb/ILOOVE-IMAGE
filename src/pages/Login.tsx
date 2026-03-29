@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { signInWithGoogle, useAuthState } from '../firebase';
+import { signInWithGoogle, useAuthState, handleRedirectResult } from '../firebase';
 import { useEffect, useState } from 'react';
 
 export default function Login() {
@@ -11,6 +11,16 @@ export default function Login() {
 
   // Get the page the user was trying to visit before being redirected to login
   const from = location.state?.from?.pathname || '/';
+
+  useEffect(() => {
+    const checkRedirect = async () => {
+      const user = await handleRedirectResult();
+      if (user) {
+        navigate(from, { replace: true });
+      }
+    };
+    checkRedirect();
+  }, [navigate, from]);
 
   useEffect(() => {
     const unsubscribe = useAuthState((user) => {

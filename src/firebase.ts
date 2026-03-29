@@ -1,12 +1,15 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { getAnalytics } from 'firebase/analytics';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp, getDocFromServer, collection, addDoc, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// @ts-ignore
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId || '(default)');
 export const googleProvider = new GoogleAuthProvider();
 
 // Connection test
@@ -26,26 +29,43 @@ testConnection();
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-    
-    // Create/update user document in Firestore
-    const userRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userRef);
-    
-    if (!userDoc.exists()) {
-      await setDoc(userRef, {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        createdAt: serverTimestamp(),
-      });
+    return result.user;
+  } catch (error: any) {
+    if (error.code === 'auth/popup-blocked') {
+      // Fallback to redirect if popup is blocked
+      await signInWithRedirect(auth, googleProvider);
+      return null; // The page will redirect, so we don't return a user yet
     }
-    
-    return user;
-  } catch (error) {
     console.error('Error signing in with Google:', error);
     throw error;
+  }
+};
+
+// Handle redirect result
+export const handleRedirectResult = async () => {
+  try {
+    const result = await getRedirectResult(auth);
+    if (result) {
+      const user = result.user;
+      // Create/update user document in Firestore
+      const userRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userRef);
+      
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          createdAt: serverTimestamp(),
+        });
+      }
+      return user;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error handling redirect result:', error);
+    return null;
   }
 };
 
