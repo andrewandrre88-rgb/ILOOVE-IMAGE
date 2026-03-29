@@ -22,10 +22,14 @@ import {
   Wind,
   Circle,
   Grid,
-  ZapIcon
+  ZapIcon,
+  LogOut,
+  User as UserIcon
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { signInWithGoogle, logout, useAuthState } from '../firebase';
+import { User } from 'firebase/auth';
 
 const allTools = [
   { title: "COMPRESS IMAGE", path: "/compress", icon: Minimize2, iconColor: "text-blue-600" },
@@ -56,13 +60,40 @@ const allTools = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const unsubscribe = useAuthState((user) => {
+      setUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Close menus on route change
   useEffect(() => {
     setIsMenuOpen(false);
     setIsToolsOpen(false);
+    setIsUserMenuOpen(false);
   }, [location.pathname]);
+
+  const handleLogin = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setIsUserMenuOpen(false);
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-sm">
@@ -139,10 +170,66 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/blog" className="text-gray-600 hover:text-blue-600 text-[11px] font-black tracking-widest uppercase transition-colors">BLOG</Link>
             <div className="h-5 w-px bg-gray-200"></div>
-            <button className="text-gray-600 hover:text-blue-600 text-[11px] font-black tracking-widest uppercase transition-colors">LOGIN</button>
-            <button className="bg-blue-600 text-white px-7 py-3.5 rounded-2xl font-black text-[11px] tracking-[0.2em] hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-95 uppercase">
-              Sign up
-            </button>
+            
+            {user ? (
+              <div className="relative">
+                <button 
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-3 group"
+                >
+                  <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-transparent group-hover:border-blue-600 transition-all">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.displayName || 'User'} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <div className="w-full h-full bg-blue-100 flex items-center justify-center">
+                        <UserIcon className="h-5 w-5 text-blue-600" />
+                      </div>
+                    )}
+                  </div>
+                  <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {isUserMenuOpen && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 top-full mt-3 w-64 bg-white rounded-3xl shadow-2xl border border-gray-100 p-4 overflow-hidden"
+                    >
+                      <div className="px-4 py-3 border-b border-gray-50 mb-2">
+                        <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Signed in as</p>
+                        <p className="text-sm font-bold text-gray-900 truncate">{user.displayName || user.email}</p>
+                      </div>
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center space-x-3 p-3 rounded-2xl hover:bg-red-50 text-red-600 transition-colors group"
+                      >
+                        <div className="p-2 rounded-xl bg-red-100 group-hover:bg-white transition-colors">
+                          <LogOut className="h-4 w-4" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest">Logout</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <>
+                <button 
+                  onClick={handleLogin}
+                  className="text-gray-600 hover:text-blue-600 text-[11px] font-black tracking-widest uppercase transition-colors"
+                >
+                  LOGIN
+                </button>
+                <button 
+                  onClick={handleLogin}
+                  className="bg-blue-600 text-white px-7 py-3.5 rounded-2xl font-black text-[11px] tracking-[0.2em] hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-95 uppercase"
+                >
+                  Sign up
+                </button>
+              </>
+            )}
           </div>
 
           <div className="lg:hidden flex items-center">
@@ -214,8 +301,46 @@ export default function Header() {
               </div>
 
               <div className="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
-                <button className="w-full py-4 rounded-2xl font-bold text-gray-700 bg-white border border-gray-200 shadow-sm">LOGIN</button>
-                <button className="w-full py-4 rounded-2xl font-black text-white bg-blue-600 shadow-lg shadow-blue-100 uppercase tracking-widest">Sign up</button>
+                {user ? (
+                  <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 rounded-xl overflow-hidden">
+                        {user.photoURL ? (
+                          <img src={user.photoURL} alt={user.displayName || 'User'} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        ) : (
+                          <div className="w-full h-full bg-blue-100 flex items-center justify-center">
+                            <UserIcon className="h-5 w-5 text-blue-600" />
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-gray-900 truncate max-w-[150px]">{user.displayName || user.email}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-widest">Signed in</p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={handleLogout}
+                      className="p-3 rounded-xl bg-red-50 text-red-600"
+                    >
+                      <LogOut className="h-5 w-5" />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button 
+                      onClick={() => { handleLogin(); setIsMenuOpen(false); }}
+                      className="w-full py-4 rounded-2xl font-bold text-gray-700 bg-white border border-gray-200 shadow-sm"
+                    >
+                      LOGIN
+                    </button>
+                    <button 
+                      onClick={() => { handleLogin(); setIsMenuOpen(false); }}
+                      className="w-full py-4 rounded-2xl font-black text-white bg-blue-600 shadow-lg shadow-blue-100 uppercase tracking-widest"
+                    >
+                      Sign up
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
