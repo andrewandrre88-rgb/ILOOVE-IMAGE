@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -29,47 +29,65 @@ import PhotoEditor from './pages/PhotoEditor';
 import HtmlToImage from './pages/HtmlToImage';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Login from './pages/Login';
+
+function AppContent() {
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
+
+  if (isLoginPage) {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen font-sans antialiased">
+      <Header />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/compress" element={<Compress />} />
+          <Route path="/resize" element={<Resize />} />
+          <Route path="/convert-to-jpg" element={<ConvertToJpg />} />
+          <Route path="/rotate" element={<Rotate />} />
+          <Route path="/crop" element={<Crop />} />
+          <Route path="/meme" element={<Meme />} />
+          <Route path="/grayscale" element={<Grayscale />} />
+          <Route path="/blur" element={<Blur />} />
+          <Route path="/pixelate" element={<Pixelate />} />
+          <Route path="/flip" element={<Flip />} />
+          <Route path="/brightness-contrast" element={<BrightnessContrast />} />
+          <Route path="/hue-saturation" element={<HueSaturation />} />
+          <Route path="/sepia" element={<Sepia />} />
+          <Route path="/invert" element={<Invert />} />
+          <Route path="/image-to-base64" element={<ImageToBase64 />} />
+          <Route path="/base64-to-image" element={<Base64ToImage />} />
+          <Route path="/add-noise" element={<AddNoise />} />
+          <Route path="/vignette" element={<Vignette />} />
+          <Route path="/posterize" element={<Posterize />} />
+          <Route path="/solarize" element={<Solarize />} />
+          <Route path="/watermark" element={<Watermark />} />
+          <Route path="/photo-editor" element={<PhotoEditor />} />
+          <Route path="/html-to-image" element={<HtmlToImage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <Router>
       <ErrorBoundary>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen font-sans antialiased">
-          <Header />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/compress" element={<Compress />} />
-              <Route path="/resize" element={<Resize />} />
-              <Route path="/convert-to-jpg" element={<ConvertToJpg />} />
-              <Route path="/rotate" element={<Rotate />} />
-              <Route path="/crop" element={<Crop />} />
-              <Route path="/meme" element={<Meme />} />
-              <Route path="/grayscale" element={<Grayscale />} />
-              <Route path="/blur" element={<Blur />} />
-              <Route path="/pixelate" element={<Pixelate />} />
-              <Route path="/flip" element={<Flip />} />
-              <Route path="/brightness-contrast" element={<BrightnessContrast />} />
-              <Route path="/hue-saturation" element={<HueSaturation />} />
-              <Route path="/sepia" element={<Sepia />} />
-              <Route path="/invert" element={<Invert />} />
-              <Route path="/image-to-base64" element={<ImageToBase64 />} />
-              <Route path="/base64-to-image" element={<Base64ToImage />} />
-              <Route path="/add-noise" element={<AddNoise />} />
-              <Route path="/vignette" element={<Vignette />} />
-              <Route path="/posterize" element={<Posterize />} />
-              <Route path="/solarize" element={<Solarize />} />
-              <Route path="/watermark" element={<Watermark />} />
-              <Route path="/photo-editor" element={<PhotoEditor />} />
-              <Route path="/html-to-image" element={<HtmlToImage />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="*" element={<Home />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <AppContent />
       </ErrorBoundary>
     </Router>
   );

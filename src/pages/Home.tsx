@@ -24,7 +24,11 @@ import {
   ZapIcon
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import ToolCard from '../components/ToolCard';
+import { useAuthState } from '../firebase';
+import { useState, useEffect } from 'react';
+import { User } from 'firebase/auth';
 
 const tools = [
   { 
@@ -191,6 +195,15 @@ const tools = [
 ];
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = useAuthState((user) => {
+      setUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -218,9 +231,15 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-black text-lg tracking-widest transition-all shadow-2xl shadow-blue-500/20 uppercase">
-              Get Started Free
-            </button>
+            {user ? (
+              <a href="#tools" className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-black text-lg tracking-widest transition-all shadow-2xl shadow-blue-500/20 uppercase">
+                Explore Tools
+              </a>
+            ) : (
+              <Link to="/login" className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-black text-lg tracking-widest transition-all shadow-2xl shadow-blue-500/20 uppercase">
+                Get Started Free
+              </Link>
+            )}
           </motion.div>
         </div>
         
@@ -232,7 +251,7 @@ export default function Home() {
       </section>
 
       {/* Tools Grid */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="tools" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-black text-gray-900 mb-4 uppercase tracking-tight">All the tools you need</h2>
           <div className="h-1.5 w-20 bg-blue-600 mx-auto rounded-full"></div>
@@ -287,9 +306,15 @@ export default function Home() {
           <p className="text-xl text-blue-100 mb-12 font-medium">
             Join millions of users who trust iLoveIMG for their daily image editing needs.
           </p>
-          <button className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-black text-xl tracking-widest hover:bg-gray-100 transition-all shadow-2xl uppercase">
-            Start Now for Free
-          </button>
+          {user ? (
+            <a href="#tools" className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-black text-xl tracking-widest hover:bg-gray-100 transition-all shadow-2xl uppercase inline-block">
+              Explore Tools
+            </a>
+          ) : (
+            <Link to="/login" className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-black text-xl tracking-widest hover:bg-gray-100 transition-all shadow-2xl uppercase inline-block">
+              Start Now for Free
+            </Link>
+          )}
         </div>
       </section>
     </div>
