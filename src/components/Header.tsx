@@ -25,7 +25,8 @@ import {
   Grid,
   ZapIcon,
   LogOut,
-  User as UserIcon
+  User as UserIcon,
+  Eraser
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -56,6 +57,7 @@ const allTools = [
   { title: "PHOTO EDITOR", path: "/photo-editor", icon: PenTool, iconColor: "text-purple-600" },
   { title: "WATERMARK", path: "/watermark", icon: Type, iconColor: "text-indigo-600" },
   { title: "HTML TO IMAGE", path: "/html-to-image", icon: FileCode, iconColor: "text-red-600" },
+  { title: "REMOVE BACKGROUND", path: "/remove-background", icon: Eraser, iconColor: "text-blue-600" },
 ];
 
 export default function Header() {

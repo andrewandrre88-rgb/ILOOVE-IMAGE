@@ -28,6 +28,7 @@ import Solarize from './pages/Solarize';
 import Watermark from './pages/Watermark';
 import PhotoEditor from './pages/PhotoEditor';
 import HtmlToImage from './pages/HtmlToImage';
+import RemoveBackground from './pages/RemoveBackground';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Login from './pages/Login';
@@ -77,6 +78,7 @@ function AppContent() {
           <Route path="/watermark" element={<ProtectedRoute><Watermark /></ProtectedRoute>} />
           <Route path="/photo-editor" element={<ProtectedRoute><PhotoEditor /></ProtectedRoute>} />
           <Route path="/html-to-image" element={<ProtectedRoute><HtmlToImage /></ProtectedRoute>} />
+          <Route path="/remove-background" element={<ProtectedRoute><RemoveBackground /></ProtectedRoute>} />
           
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />

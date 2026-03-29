@@ -22,10 +22,11 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-bold mb-4 uppercase text-sm tracking-wider">Product</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Compress IMAGE</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Resize IMAGE</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Crop IMAGE</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Convert to JPG</a></li>
+              <li><a href="/compress" className="hover:text-blue-400 transition-colors">Compress IMAGE</a></li>
+              <li><a href="/resize" className="hover:text-blue-400 transition-colors">Resize IMAGE</a></li>
+              <li><a href="/crop" className="hover:text-blue-400 transition-colors">Crop IMAGE</a></li>
+              <li><a href="/convert-to-jpg" className="hover:text-blue-400 transition-colors">Convert to JPG</a></li>
+              <li><a href="/remove-background" className="hover:text-blue-400 transition-colors">Remove Background</a></li>
             </ul>
           </div>
           <div>

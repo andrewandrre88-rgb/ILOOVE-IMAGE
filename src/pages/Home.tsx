@@ -22,7 +22,8 @@ import {
   Circle,
   Grid,
   ZapIcon,
-  Wrench
+  Wrench,
+  Eraser
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
@@ -190,6 +191,13 @@ const tools = [
     path: "/html-to-image", 
     icon: FileCode, 
     color: "bg-red-600" 
+  },
+  { 
+    title: "REMOVE BACKGROUND", 
+    description: "Remove background from images automatically in seconds. Perfect for product photos and portraits.",
+    path: "/remove-background", 
+    icon: Eraser, 
+    color: "bg-blue-600" 
   },
 ];
 
