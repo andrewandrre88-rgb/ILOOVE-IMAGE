@@ -65,8 +65,6 @@ export default function Login() {
               iLove<span className="text-blue-600">IMG</span>
             </span>
           </Link>
-          <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter mb-3">Welcome Back</h1>
-          <p className="text-gray-500 font-medium">Sign in to access all image tools and save your progress.</p>
         </div>
 
         <div className="space-y-4">
@@ -99,15 +97,6 @@ export default function Login() {
             )}
             <span>{isLoading ? 'Connecting...' : 'Continue with Google'}</span>
           </button>
-
-          <div className="relative py-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100"></div>
-            </div>
-            <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest">
-              <span className="bg-white px-4 text-gray-400">Secure Authentication</span>
-            </div>
-          </div>
 
           <Link 
             to="/"

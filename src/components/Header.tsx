@@ -210,20 +210,12 @@ export default function Header() {
                 </AnimatePresence>
               </div>
             ) : (
-              <>
-                <Link 
-                  to="/login"
-                  className="text-gray-600 hover:text-blue-600 text-[11px] font-black tracking-widest uppercase transition-colors"
-                >
-                  LOGIN
-                </Link>
-                <Link 
-                  to="/login"
-                  className="bg-blue-600 text-white px-7 py-3.5 rounded-2xl font-black text-[11px] tracking-[0.2em] hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-95 uppercase"
-                >
-                  Sign up
-                </Link>
-              </>
+              <Link 
+                to="/login"
+                className="bg-blue-600 text-white px-7 py-3.5 rounded-2xl font-black text-[11px] tracking-[0.2em] hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-95 uppercase"
+              >
+                Sign in
+              </Link>
             )}
           </div>
 
@@ -321,22 +313,13 @@ export default function Header() {
                     </button>
                   </div>
                 ) : (
-                  <>
-                    <Link 
-                      to="/login"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="w-full py-4 rounded-2xl font-bold text-gray-700 bg-white border border-gray-200 shadow-sm text-center block"
-                    >
-                      LOGIN
-                    </Link>
-                    <Link 
-                      to="/login"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="w-full py-4 rounded-2xl font-black text-white bg-blue-600 shadow-lg shadow-blue-100 uppercase tracking-widest text-center block"
-                    >
-                      Sign up
-                    </Link>
-                  </>
+                  <Link 
+                    to="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full py-4 rounded-2xl font-black text-white bg-blue-600 shadow-lg shadow-blue-100 uppercase tracking-widest text-center block"
+                  >
+                    Sign in
+                  </Link>
                 )}
               </div>
             </div>

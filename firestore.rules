@@ -63,6 +63,22 @@ service cloud.firestore {
       
       // Users cannot delete their profiles via the app
       allow delete: if false;
+
+      match /history/{historyId} {
+        // Users can only read their own history
+        allow read: if isOwner(userId);
+        
+        // Users can only create their own history entries
+        allow create: if isOwner(userId) && 
+                        request.resource.data.keys().hasAll(['tool', 'fileName', 'action', 'timestamp']) &&
+                        request.resource.data.tool is string &&
+                        request.resource.data.fileName is string &&
+                        request.resource.data.action is string &&
+                        request.resource.data.timestamp is timestamp;
+        
+        // History entries are immutable
+        allow update, delete: if false;
+      }
     }
   }
 }

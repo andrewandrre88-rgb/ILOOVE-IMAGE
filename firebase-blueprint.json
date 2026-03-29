@@ -12,12 +12,28 @@
         "createdAt": { "type": "string", "format": "date-time", "description": "When the user was created" }
       },
       "required": ["uid", "email", "displayName", "createdAt"]
+    },
+    "History": {
+      "title": "History",
+      "description": "User activity log entry",
+      "type": "object",
+      "properties": {
+        "tool": { "type": "string", "description": "The tool used" },
+        "fileName": { "type": "string", "description": "The name of the file processed" },
+        "action": { "type": "string", "description": "The action performed" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the action occurred" }
+      },
+      "required": ["tool", "fileName", "action", "timestamp"]
     }
   },
   "firestore": {
     "/users/{userId}": {
       "schema": "User",
       "description": "Collection of user profiles"
+    },
+    "/users/{userId}/history/{historyId}": {
+      "schema": "History",
+      "description": "User-specific activity history"
     }
   }
 }
