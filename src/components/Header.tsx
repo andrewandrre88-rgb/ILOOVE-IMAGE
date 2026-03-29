@@ -28,8 +28,8 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { signInWithGoogle, logout, useAuthState } from '../firebase';
-import { User } from 'firebase/auth';
+import { logout } from '../firebase';
+import { useAuth } from '../hooks/useAuth';
 
 const allTools = [
   { title: "COMPRESS IMAGE", path: "/compress", icon: Minimize2, iconColor: "text-blue-600" },
@@ -60,16 +60,9 @@ const allTools = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { user } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const unsubscribe = useAuthState((user) => {
-      setUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Close menus on route change
   useEffect(() => {
@@ -77,14 +70,6 @@ export default function Header() {
     setIsToolsOpen(false);
     setIsUserMenuOpen(false);
   }, [location.pathname]);
-
-  const handleLogin = async () => {
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      console.error("Login failed", error);
-    }
-  };
 
   const handleLogout = async () => {
     try {
@@ -201,6 +186,16 @@ export default function Header() {
                         <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Signed in as</p>
                         <p className="text-sm font-bold text-gray-900 truncate">{user.displayName || user.email}</p>
                       </div>
+                      <Link 
+                        to="/history" 
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="w-full flex items-center space-x-3 p-3 rounded-2xl hover:bg-blue-50 text-gray-700 transition-colors group mb-2"
+                      >
+                        <div className="p-2 rounded-xl bg-blue-100 group-hover:bg-white transition-colors">
+                          <History className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest">My History</span>
+                      </Link>
                       <button 
                         onClick={handleLogout}
                         className="w-full flex items-center space-x-3 p-3 rounded-2xl hover:bg-red-50 text-red-600 transition-colors group"

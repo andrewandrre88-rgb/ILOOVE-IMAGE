@@ -1,27 +1,31 @@
 import { motion } from 'motion/react';
 import { Image as ImageIcon, ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signInWithGoogle, useAuthState } from '../firebase';
 import { useEffect, useState } from 'react';
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Get the page the user was trying to visit before being redirected to login
+  const from = location.state?.from?.pathname || '/';
 
   useEffect(() => {
     const unsubscribe = useAuthState((user) => {
       if (user) {
-        navigate('/');
+        navigate(from, { replace: true });
       }
     });
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, from]);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
       await signInWithGoogle();
-      navigate('/');
+      navigate(from, { replace: true });
     } catch (error) {
       console.error("Login failed", error);
     } finally {

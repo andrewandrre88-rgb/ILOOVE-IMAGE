@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Compress from './pages/Compress';
 import Resize from './pages/Resize';
@@ -30,6 +31,7 @@ import HtmlToImage from './pages/HtmlToImage';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Login from './pages/Login';
+import HistoryPage from './pages/HistoryPage';
 
 function AppContent() {
   const location = useLocation();
@@ -49,29 +51,33 @@ function AppContent() {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/compress" element={<Compress />} />
-          <Route path="/resize" element={<Resize />} />
-          <Route path="/convert-to-jpg" element={<ConvertToJpg />} />
-          <Route path="/rotate" element={<Rotate />} />
-          <Route path="/crop" element={<Crop />} />
-          <Route path="/meme" element={<Meme />} />
-          <Route path="/grayscale" element={<Grayscale />} />
-          <Route path="/blur" element={<Blur />} />
-          <Route path="/pixelate" element={<Pixelate />} />
-          <Route path="/flip" element={<Flip />} />
-          <Route path="/brightness-contrast" element={<BrightnessContrast />} />
-          <Route path="/hue-saturation" element={<HueSaturation />} />
-          <Route path="/sepia" element={<Sepia />} />
-          <Route path="/invert" element={<Invert />} />
-          <Route path="/image-to-base64" element={<ImageToBase64 />} />
-          <Route path="/base64-to-image" element={<Base64ToImage />} />
-          <Route path="/add-noise" element={<AddNoise />} />
-          <Route path="/vignette" element={<Vignette />} />
-          <Route path="/posterize" element={<Posterize />} />
-          <Route path="/solarize" element={<Solarize />} />
-          <Route path="/watermark" element={<Watermark />} />
-          <Route path="/photo-editor" element={<PhotoEditor />} />
-          <Route path="/html-to-image" element={<HtmlToImage />} />
+          
+          {/* Protected Tool Routes */}
+          <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
+          <Route path="/compress" element={<ProtectedRoute><Compress /></ProtectedRoute>} />
+          <Route path="/resize" element={<ProtectedRoute><Resize /></ProtectedRoute>} />
+          <Route path="/convert-to-jpg" element={<ProtectedRoute><ConvertToJpg /></ProtectedRoute>} />
+          <Route path="/rotate" element={<ProtectedRoute><Rotate /></ProtectedRoute>} />
+          <Route path="/crop" element={<ProtectedRoute><Crop /></ProtectedRoute>} />
+          <Route path="/meme" element={<ProtectedRoute><Meme /></ProtectedRoute>} />
+          <Route path="/grayscale" element={<ProtectedRoute><Grayscale /></ProtectedRoute>} />
+          <Route path="/blur" element={<ProtectedRoute><Blur /></ProtectedRoute>} />
+          <Route path="/pixelate" element={<ProtectedRoute><Pixelate /></ProtectedRoute>} />
+          <Route path="/flip" element={<ProtectedRoute><Flip /></ProtectedRoute>} />
+          <Route path="/brightness-contrast" element={<ProtectedRoute><BrightnessContrast /></ProtectedRoute>} />
+          <Route path="/hue-saturation" element={<ProtectedRoute><HueSaturation /></ProtectedRoute>} />
+          <Route path="/sepia" element={<ProtectedRoute><Sepia /></ProtectedRoute>} />
+          <Route path="/invert" element={<ProtectedRoute><Invert /></ProtectedRoute>} />
+          <Route path="/image-to-base64" element={<ProtectedRoute><ImageToBase64 /></ProtectedRoute>} />
+          <Route path="/base64-to-image" element={<ProtectedRoute><Base64ToImage /></ProtectedRoute>} />
+          <Route path="/add-noise" element={<ProtectedRoute><AddNoise /></ProtectedRoute>} />
+          <Route path="/vignette" element={<ProtectedRoute><Vignette /></ProtectedRoute>} />
+          <Route path="/posterize" element={<ProtectedRoute><Posterize /></ProtectedRoute>} />
+          <Route path="/solarize" element={<ProtectedRoute><Solarize /></ProtectedRoute>} />
+          <Route path="/watermark" element={<ProtectedRoute><Watermark /></ProtectedRoute>} />
+          <Route path="/photo-editor" element={<ProtectedRoute><PhotoEditor /></ProtectedRoute>} />
+          <Route path="/html-to-image" element={<ProtectedRoute><HtmlToImage /></ProtectedRoute>} />
+          
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="*" element={<Home />} />

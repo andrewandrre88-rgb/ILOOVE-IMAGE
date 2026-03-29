@@ -26,9 +26,7 @@ import {
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import ToolCard from '../components/ToolCard';
-import { useAuthState } from '../firebase';
-import { useState, useEffect } from 'react';
-import { User } from 'firebase/auth';
+import { useAuth } from '../hooks/useAuth';
 
 const tools = [
   { 
@@ -195,14 +193,7 @@ const tools = [
 ];
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = useAuthState((user) => {
-      setUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
+  const { user } = useAuth();
 
   return (
     <div className="bg-white">
@@ -259,7 +250,7 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {tools.map((tool, index) => (
-            <ToolCard key={index} {...tool} />
+            <ToolCard key={index} {...tool} isLocked={!user} />
           ))}
         </div>
       </section>

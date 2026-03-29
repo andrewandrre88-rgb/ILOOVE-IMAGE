@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import { Download, Loader2, Minimize2 } from 'lucide-react';
+import { saveUserHistory } from '../firebase';
+import { useAuth } from '../hooks/useAuth';
+import History from '../components/History';
 
 export default function Compress() {
+  const { user } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [compressedFiles, setCompressedFiles] = useState<{ name: string; url: string; originalSize: number; compressedSize: number }[]>([]);
@@ -16,6 +20,11 @@ export default function Compress() {
     for (const file of files) {
       const compressed = await compressImage(file);
       results.push(compressed);
+      
+      // Save to user history if logged in
+      if (user) {
+        await saveUserHistory(user.uid, 'COMPRESS', file.name, 'Compressed');
+      }
     }
     
     setCompressedFiles(results);
@@ -149,6 +158,9 @@ export default function Compress() {
             </div>
           </div>
         )}
+
+        {/* History Section */}
+        <History />
 
         {/* SEO Information Section */}
         <section className="mt-24 max-w-4xl mx-auto">

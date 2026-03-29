@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp, getDocFromServer } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp, getDocFromServer, collection, addDoc, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase
@@ -50,6 +50,38 @@ export const signInWithGoogle = async () => {
 };
 
 export const logout = () => signOut(auth);
+
+// History functions
+export const saveUserHistory = async (userId: string, tool: string, fileName: string, action: string) => {
+  if (!userId) return;
+  try {
+    const historyRef = collection(db, 'users', userId, 'history');
+    await addDoc(historyRef, {
+      tool,
+      fileName,
+      action,
+      timestamp: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error('Error saving history:', error);
+  }
+};
+
+export const getUserHistory = async (userId: string) => {
+  if (!userId) return [];
+  try {
+    const historyRef = collection(db, 'users', userId, 'history');
+    const q = query(historyRef, orderBy('timestamp', 'desc'), limit(10));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error('Error getting history:', error);
+    return [];
+  }
+};
 
 // Helper for auth state
 export const useAuthState = (callback: (user: User | null) => void) => {

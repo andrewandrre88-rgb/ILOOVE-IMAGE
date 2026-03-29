@@ -2,8 +2,12 @@ import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import ImageUploader from '../components/ImageUploader';
 import { Download, Loader2, Crop as CropIcon } from 'lucide-react';
+import { saveUserHistory } from '../firebase';
+import { useAuth } from '../hooks/useAuth';
+import History from '../components/History';
 
 export default function Crop() {
+  const { user } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -57,10 +61,17 @@ export default function Crop() {
     );
 
     const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+    const fileName = files[0].name.replace(/\.[^/.]+$/, "") + "_cropped.jpg";
     setCroppedImage({
-      name: files[0].name.replace(/\.[^/.]+$/, "") + "_cropped.jpg",
+      name: fileName,
       url: croppedDataUrl
     });
+    
+    // Save to user history if logged in
+    if (user) {
+      await saveUserHistory(user.uid, 'CROP', files[0].name, 'Cropped');
+    }
+    
     setIsProcessing(false);
   };
 
@@ -180,6 +191,9 @@ export default function Crop() {
             </div>
           </div>
         )}
+
+        {/* History Section */}
+        <History />
 
         {/* SEO Information Section */}
         <section className="mt-24 max-w-4xl mx-auto">

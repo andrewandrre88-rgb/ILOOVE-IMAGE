@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import { Download, Loader2, Maximize2 } from 'lucide-react';
+import { saveUserHistory } from '../firebase';
+import { useAuth } from '../hooks/useAuth';
+import History from '../components/History';
 
 export default function Resize() {
+  const { user } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [resizedFiles, setResizedFiles] = useState<{ name: string; url: string }[]>([]);
@@ -18,6 +22,11 @@ export default function Resize() {
     for (const file of files) {
       const resized = await resizeImage(file);
       results.push(resized);
+      
+      // Save to user history if logged in
+      if (user) {
+        await saveUserHistory(user.uid, 'RESIZE', file.name, 'Resized');
+      }
     }
     
     setResizedFiles(results);
@@ -175,6 +184,9 @@ export default function Resize() {
             </div>
           </div>
         )}
+
+        {/* History Section */}
+        <History />
 
         {/* SEO Information Section */}
         <section className="mt-24 max-w-4xl mx-auto">
